@@ -2,63 +2,51 @@
 
 > Mandatory for mentor review. Open a GitHub Issue linking to this file before Week 3.
 
-**Student:**  
-**Repo:**  
-**Branch:** `week-2-design`  
-**GitHub Issue:**  
+**Students:** Dareen Abualhaj, Tala Saabneh, Saja Sayaara  
+**Repo:** Quote-of-the-Day  
+**Branch:** `main`  
+**GitHub Issue:** Week 2 design review  
 
 ---
 
 ## 1. Pitch
 
-One paragraph: what you are building and who it helps.
+Many individuals, content creators, and students look for relevant daily quotes, inspirational content, or author-specific wisdom during their workflow. Finding these quotes usually requires searching manually across third-party websites or APIs. This MCP server exposes tools that allow AI assistants to seamlessly query quotes by keyword, author, or category, as well as fetch daily quotes directly through natural language.
 
 ## 2. Demo Day user story
 
-Describe a 2–3 minute live demo:
-
-1. Host / Inspector starts
-2. User asks for …
-3. Model calls tool(s) …
-4. Audience sees …
+During the live demo, the host connects the AI client (Claude / MCP Inspector) to the Quote-of-the-Day MCP server. The user asks, *"Can you find me a motivational quote about courage, and list available quote categories?"* The AI model identifies the request and sequentially invokes `search_quotes` with the keyword "courage", followed by `list_categories` to display all available topics. The audience sees the formatted quotes and category list returned live in the chat interface.
 
 ## 3. Tool inventory (4–7 tools)
 
-Mark exactly **three** tools as **P0** (must work for Demo Day). Others can be P1 stubs.
-
 | Priority | Tool name (`verb_noun`) | Description (for the model) | Inputs | Outputs |
 | --- | --- | --- | --- | --- |
-| P0 |  |  |  |  |
-| P0 |  |  |  |  |
-| P0 |  |  |  |  |
-| P1 |  |  |  |  |
-| P1 |  |  |  |  |
+| P0 | `get_daily_quote` | Fetch a single daily inspirational quote. | None | `{ quote: string, author: string, category: string }` |
+| P0 | `search_quotes` | Search for quotes by keyword, topic, or author name. | `keyword` (string) | `{ results: Array<{ quote: string, author: string }> }` |
+| P0 | `list_categories` | Retrieve all available quote categories/tags. | None | `{ categories: Array<string> }` |
+| P1 | `add_favorite_quote` | Save a quote to the user's local favorites list. | `quote` (string), `author` (string) | `{ success: boolean, message: string }` |
+| P1 | `list_favorite_quotes` | Retrieve all quotes stored in the user's favorites list. | None | `{ favorites: Array<{ quote: string, author: string }> }` |
 
 ## 4. Out of scope
 
-List what you will **not** build in this cohort (auth, paid APIs, mobile UI, etc.).
-
--
-
--
-
--
+- User authentication, JWT sessions, or multi-tenant user accounts.
+- Image/graphic generation for quotes (e.g., social media poster generation).
+- Direct automated integration or posting to external social media platforms (X/Twitter, LinkedIn).
 
 ## 5. Success criteria
 
-You succeed on Demo Day if:
+We Will succees on Demo Day if:
 
-- [ ]
-- [ ]
-- [ ]
+- [ ] `search_quotes` returns matching quotes from fixture data for a given keyword without schema errors.
+- [ ] `get_daily_quote` successfully fetches and renders a valid quote structure live in the Inspector.
+- [ ] `list_categories` successfully returns the full list of available categories.
 
 ## 6. Top risks
 
 | Risk | Likelihood | Mitigation |
 | --- | --- | --- |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| External quotes API downtime or rate limiting during testing | Medium | Implement local fallback JSON fixtures for offline development and testing. |
+| Model failing to pass correct arguments to Zod schema | Low | Write sharp, explicit descriptions in Zod `.describe()` fields for every tool parameter. |
 
 ## 7. Evidence for Week 2
 
@@ -70,5 +58,5 @@ You succeed on Demo Day if:
 
 ## Mentor decision
 
-- Status: pending / approved / changes requested
+- Status: pending
 - Comments:
