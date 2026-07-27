@@ -1,32 +1,25 @@
 import { McpServer } from "@modelcontextprotocol/server";
 import { serveStdio } from "@modelcontextprotocol/server/stdio";
 
-import { registerGreetTool } from "./tools/greet.js";
-// Week 2: import and register your project tools here, for example:
-// import { registerSearchNotesTool } from "./tools/search-notes.js";
-// import { registerListNotesTool } from "./tools/list-notes.js";
-// import { registerAddNoteTool } from "./tools/add-note.js";
+import { registerGetDailyQuoteTool } from "./tools/get-daily-quote.js";
+import { registerSearchQuotesTool } from "./tools/search-quotes.js";
+import { registerListCategoriesTool } from "./tools/list-categories.js";
 
-/**
- * Factory used by stdio (and later HTTP) so every connection gets a fresh server.
- * Register all tools inside this function — never on a shared global instance.
- */
+//  Creates a new MCP server instance.
+// Every client connection gets its own server.
 function createServer(): McpServer {
   const server = new McpServer({
-    name: "mcprepo",
+    name: "quote-of-the-day",
     version: "0.1.0",
   });
 
-  // Week 1 — one working tool so you can verify Inspector immediately
-  registerGreetTool(server);
-
-  // Week 2 — register your multi-tool skeleton (stubs are OK)
-  // registerSearchNotesTool(server);
-  // registerListNotesTool(server);
-  // registerAddNoteTool(server);
+  // P0 Tools
+  registerGetDailyQuoteTool(server);     // Tala
+  registerSearchQuotesTool(server);      // Dareen
+  registerListCategoriesTool(server);    // Saja
 
   return server;
 }
 
 void serveStdio(createServer);
-console.error("mcprepo MCP server running on stdio");
+console.error("Quote-of-the-Day MCP server running on stdio");
