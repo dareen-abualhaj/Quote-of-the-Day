@@ -46,7 +46,15 @@ We Will succees on Demo Day if:
 | Risk | Likelihood | Mitigation |
 | --- | --- | --- |
 | External quotes API downtime or rate limiting during testing | Medium | Implement local fallback JSON fixtures for offline development and testing. |
-| Model failing to pass correct arguments to Zod schema | Low | Write sharp, explicit descriptions in Zod `.describe()` fields for every tool parameter. |
+| Model failing to pass correct arguments to Zod schema | Low | Write sharp, explicit descriptions in Zod `.describe()` 
+fields for every tool parameter. |
+## Notes from reading Official Filesystem MCP Server
+
+- **Naming Patterns:** Tools consistently use a strict `verb_noun` snake_case naming convention (e.g., `read_file`, `list_directory`), making their intent instantly clear.
+- **Description Length:** Descriptions are concise (1–2 sentences) and focused purely on instructing the AI model when and how to invoke the tool.
+- **Parameter Clarity:** Parameters use explicit `.describe()` annotations in Zod to specify allowed types, bounds, and defaults rather than relying on vague names.
+- **Error Phrasing:** Validations and edge cases (e.g., required lengths, allowed formats) are directly stated in the Zod error messages to guide the client on failure.
+- **Output Structure:** Tool responses favor structured JSON objects over plain unstructured strings to make response parsing reliable for the model.
 
 ## 7. Evidence for Week 2
 
