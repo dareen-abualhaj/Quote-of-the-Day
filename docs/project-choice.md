@@ -1,7 +1,13 @@
 # Project choice
 
 > Complete in Week 2. One sentence only for the pitch line — expand details below if needed.
+## Team Members
 
+| Name |
+|--------|
+| Tala Saabneh |
+| Dareen Abualhaj |
+| Saja Sayare |
 ## Pitch (required)
 
 We are building a **Quote of the Day MCP Server** for **content creators, students, and educators** so that **they can seamlessly search, discover, and organize motivational quotes directly through natural language within their AI chat host.**
