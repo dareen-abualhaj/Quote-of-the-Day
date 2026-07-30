@@ -1,13 +1,13 @@
-import { McpServer } from "@modelcontextprotocol/server";
-import { serveStdio } from "@modelcontextprotocol/server/stdio";
+import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import { serveStdio } from "@modelcontextprotocol/sdk/server/stdio.js";
 
 import { registerGetDailyQuoteTool } from "./tools/get-daily-quote.js";
 import { registerSearchQuotesTool } from "./tools/search-quotes.js";
 import { registerListCategoriesTool } from "./tools/list-categories.js";
 
-//  Creates a new MCP server instance.
+// Creates a new MCP server instance.
 // Every client connection gets its own server.
-function createServer(): McpServer {
+export function createServer(): McpServer {
   const server = new McpServer({
     name: "quote-of-the-day",
     version: "0.1.0",
