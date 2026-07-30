@@ -1,12 +1,11 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { serveStdio } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 
 import { registerGetDailyQuoteTool } from "./tools/get-daily-quote.js";
 import { registerSearchQuotesTool } from "./tools/search-quotes.js";
 import { registerListCategoriesTool } from "./tools/list-categories.js";
 
 // Creates a new MCP server instance.
-// Every client connection gets its own server.
 export function createServer(): McpServer {
   const server = new McpServer({
     name: "quote-of-the-day",
@@ -21,5 +20,14 @@ export function createServer(): McpServer {
   return server;
 }
 
-void serveStdio(createServer);
-console.error("Quote-of-the-Day MCP server running on stdio");
+async function main() {
+  const server = createServer();
+  const transport = new StdioServerTransport();
+  await server.connect(transport);
+  console.error("Quote-of-the-Day MCP server running on stdio");
+}
+
+main().catch((error) => {
+  console.error("Fatal error running server:", error);
+  process.exit(1);
+});
