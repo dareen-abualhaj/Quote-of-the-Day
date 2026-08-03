@@ -16,7 +16,7 @@ export function registerSearchQuotesTool(server: McpServer) {
       let results = [];
 
       try {
-        // 1. المحاولة الأولى: جلب البيانات من API Ninjas
+        
         const url = https://api.api-ninjas.com/v1/quotes?quote=${encodeURIComponent(query)};
         const response = await fetch(url, {
           headers: {
@@ -35,7 +35,7 @@ export function registerSearchQuotesTool(server: McpServer) {
           throw new Error("No quotes returned from API");
         }
       } catch (error) {
-        // 2. الـ Fallback المحلي: البحث داخل ملف data/quotes.json
+        
         try {
           const filePath = path.join(process.cwd(), "data", "quotes.json");
           const fileData = fs.readFileSync(filePath, "utf-8");
