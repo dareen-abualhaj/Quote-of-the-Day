@@ -1,23 +1,23 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SearchQuotesInputSchema } from "../schemas/search-quotes.js";
-import fs from "fs";
-import path from "path";
+import { searchLocalQuotes } from "../lib/quotes.js";
 
 export function registerSearchQuotesTool(server: McpServer) {
   server.registerTool(
     "search_quotes",
     {
-      description: "Search for quotes matching a keyword, topic, or author.",
+      description: "Searches for quotes matching a keyword, topic, or author name.",
       inputSchema: SearchQuotesInputSchema,
     },
-    async (input) => {
+    async (args: any) => {
       const apiKey = process.env.API_KEY || process.env.API_NINJAS_KEY;
-      const searchInput = input as any;
-      const query = searchInput?.query || searchInput?.keyword || searchInput?.topic || "";
-      let results: any = [];
+      const keyword = args?.keyword || args?.query || args?.topic || "";
+      const limit = args?.limit || 10;
+      let results: any[] = [];
 
       try {
-        const url = https://api.api-ninjas.com/v1/quotes?quote=${encodeURIComponent(query)};
+        const url = `https://api.api-ninjas.com/v1/quotes?quote=${encodeURIComponent(keyword)}`;
+
         const response = await fetch(url, {
           headers: {
             "X-Api-Key": apiKey || "",
@@ -25,31 +25,19 @@ export function registerSearchQuotesTool(server: McpServer) {
         });
 
         if (!response.ok) {
-          throw new Error(API error ${response.status});
+          throw new Error(`API error ${response.status}`);
         }
 
         const data = await response.json();
+        
         if (Array.isArray(data) && data.length > 0) {
-          results = data;
+          results = data.slice(0, limit);
         } else {
           throw new Error("No quotes returned from API");
         }
       } catch (error) {
-        try {
-          const filePath = path.join(process.cwd(), "data", "quotes.json");
-          const fileData = fs.readFileSync(filePath, "utf-8");
-          const localQuotes = JSON.parse(fileData);
-
-          const searchLower = String(query).toLowerCase();
-          results = localQuotes.filter((q: any) => {
-            const quoteMatch = q.quote && String(q.quote).toLowerCase().includes(searchLower);
-            const authorMatch = q.author && String(q.author).toLowerCase().includes(searchLower);
-            const categoryMatch = q.category && String(q.category).toLowerCase().includes(searchLower);
-            return quoteMatch || authorMatch || categoryMatch;
-          });
-        } catch (localError) {
-          results = [];
-        }
+        // الاعتماد على الدالة النقية المنفصلة في حال فشل الـ API
+        results = searchLocalQuotes(keyword, limit);
       }
 
       return {
