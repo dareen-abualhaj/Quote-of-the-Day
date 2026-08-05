@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-اً
+
+// دالة قراءة الاقتباسات محلياً
 export function loadLocalQuotes() {
   const filePath = path.join(process.cwd(), "data", "quotes.json");
   if (!fs.existsSync(filePath)) {
@@ -10,7 +11,7 @@ export function loadLocalQuotes() {
   return JSON.parse(fileContent);
 }
 
-//
+// دالة فلترة والبحث في الاقتباسات محلياً
 export function searchLocalQuotes(keyword: string, limit: number = 10) {
   const localData = loadLocalQuotes();
   const searchLower = keyword.toLowerCase();
@@ -29,7 +30,7 @@ export function searchLocalQuotes(keyword: string, limit: number = 10) {
     .slice(0, limit);
 }
 
-//
+// دالة جلب الاقتباس اليومي عشوائياً أو حسب التصنيف محلياً
 export function getLocalDailyQuote(category?: string) {
   const localData = loadLocalQuotes();
   let filtered = localData;
@@ -42,26 +43,6 @@ export function getLocalDailyQuote(category?: string) {
 
   const pool = filtered.length > 0 ? filtered : localData;
   if (pool.length === 0) return { quote: "Keep going!", author: "System", category: "general" };
-
+  
   return pool[Math.floor(Math.random() * pool.length)];
-}
-
-export function getLocalCategories(limit: number = 10) {
-  const localData = loadLocalQuotes();
-
-  const categoriesMap: { [key: string]: number } = {};
-
-  localData.forEach((q: any) => {
-    if (q.category) {
-      const cat = String(q.category).toLowerCase();
-      categoriesMap[cat] = (categoriesMap[cat] || 0) + 1;
-    }
-  });
-
-  const categories = Object.keys(categoriesMap).map((name) => ({
-    name,
-    count: categoriesMap[name],
-  }));
-
-  return categories.slice(0, limit);
 }
