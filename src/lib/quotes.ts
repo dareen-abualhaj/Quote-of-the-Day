@@ -1,9 +1,16 @@
 import fs from "fs";
 import path from "path";
 
-// دالة قراءة الاقتباسات محلياً
+// دالة قراءة الاقتباسات محلياً مع حماية المسار (Path Safety)
 export function loadLocalQuotes() {
-  const filePath = path.join(process.cwd(), "data", "quotes.json");
+  const dataDir = path.resolve(process.cwd(), "data");
+  const filePath = path.resolve(dataDir, "quotes.json");
+
+  // التحقق من أن المسار يبقى داخل مجلد data لمنع أي Path Traversal
+  if (!filePath.startsWith(dataDir + path.sep)) {
+    throw new Error("Invalid data file path.");
+  }
+
   if (!fs.existsSync(filePath)) {
     return [];
   }
