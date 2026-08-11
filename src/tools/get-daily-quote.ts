@@ -22,7 +22,6 @@ export function registerGetDailyQuoteTool(server: McpServer) {
           const url = new URL("https://api.api-ninjas.com/v1/quotes");
           if (category) url.searchParams.set("category", category);
 
-          // SSRF Allowlist Check
           if (url.hostname !== ALLOWED_HOST) {
             throw new Error("External host is not allowed.");
           }
