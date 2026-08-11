@@ -2,6 +2,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { getDailyQuoteInputSchema } from "../schemas/get-daily-quote.js";
 import { getLocalDailyQuote } from "../lib/quotes.js";
 
+const ALLOWED_HOST = "api.api-ninjas.com";
+
 export function registerGetDailyQuoteTool(server: McpServer) {
   server.registerTool(
     "get_daily_quote",
@@ -13,35 +15,37 @@ export function registerGetDailyQuoteTool(server: McpServer) {
     async (args: any) => {
       const apiKey = process.env.API_KEY || process.env.API_NINJAS_KEY;
       const category = args?.category || "";
-
       let quoteData: any = null;
 
-      try {
-        let url = "https://api.api-ninjas.com/v1/quotes";
+      if (apiKey) {
+        try {
+          const url = new URL("https://api.api-ninjas.com/v1/quotes");
+          if (category) url.searchParams.set("category", category);
 
-        if (category) {
-          url += `?category=${encodeURIComponent(category)}`;
+          // SSRF Allowlist Check
+          if (url.hostname !== ALLOWED_HOST) {
+            throw new Error("External host is not allowed.");
+          }
+
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 10000);
+
+          try {
+            const response = await fetch(url, {
+              headers: { "X-Api-Key": apiKey },
+              signal: controller.signal,
+            });
+            if (!response.ok) throw new Error(API error ${response.status});
+            const data = await response.json();
+            if (Array.isArray(data) && data.length > 0) quoteData = data[0];
+            else throw new Error("No quote returned from API");
+          } finally {
+            clearTimeout(timeout);
+          }
+        } catch (error) {
+          quoteData = getLocalDailyQuote(category);
         }
-
-        const response = await fetch(url, {
-          headers: {
-            "X-Api-Key": apiKey || "",
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error(`API error ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (Array.isArray(data) && data.length > 0) {
-          quoteData = data[0];
-        } else {
-          throw new Error("No quote returned from API");
-        }
-      } catch (error) {
-        // Fallback to local data if the API fails
+      } else {
         quoteData = getLocalDailyQuote(category);
       }
 
