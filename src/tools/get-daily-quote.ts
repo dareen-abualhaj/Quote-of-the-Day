@@ -34,14 +34,29 @@ export function registerGetDailyQuoteTool(server: McpServer) {
               headers: { "X-Api-Key": apiKey },
               signal: controller.signal,
             });
-            if (!response.ok) throw new Error(`API error ${response.status}`);
+          
+            if (!response.ok) {
+              throw new Error(`API error ${response.status}`);
+            }
+          
             const data = await response.json();
-            if (Array.isArray(data) && data.length > 0) quoteData = data[0];
-            else throw new Error("No quote returned from API");
+          
+            if (Array.isArray(data) && data.length > 0) {
+              quoteData = data[0];
+            } else {
+              throw new Error("No quote returned from API");
+            }
           } finally {
             clearTimeout(timeout);
           }
         } catch (error) {
+          console.error(
+            "get_daily_quote API error:",
+            error instanceof Error ? error.message : error
+          );
+        
+          console.error("Using local quote fallback.");
+        
           quoteData = getLocalDailyQuote(category);
         }
       } else {
