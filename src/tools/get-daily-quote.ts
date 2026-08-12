@@ -34,7 +34,7 @@ export function registerGetDailyQuoteTool(server: McpServer) {
               headers: { "X-Api-Key": apiKey },
               signal: controller.signal,
             });
-            if (!response.ok) throw new Error(API error ${response.status});
+            if (!response.ok) throw new Error(`API error ${response.status}`);
             const data = await response.json();
             if (Array.isArray(data) && data.length > 0) quoteData = data[0];
             else throw new Error("No quote returned from API");
