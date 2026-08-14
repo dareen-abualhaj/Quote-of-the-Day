@@ -1,69 +1,56 @@
-# MCPRepo — NextFlows Academy Starter
+# Quote-of-the-Day — MCP Server
 
-> Part of **[NextFlows Academy](https://nextflows.ai/academy)** — the free cohort program **Building an MCP for an AI Engine**.
+> Part of **[NextFlows Academy](https://nextflows.ai/academy)** — cohort program **Building an MCP for an AI Engine**.
 
-Clone this repo to build your **Model Context Protocol (MCP)** server in TypeScript. By Demo Day you will ship a public GitHub repo with real tools, Zod validation, docs, and a live demo — the same path used in the free NextFlows Academy cohort.
+MCP (Model Context Protocol) server that lets an AI host (Claude, MCP Inspector, etc.) fetch, search, and browse inspirational quotes — either from a curated local dataset or from a live external API, with a safe local fallback.
 
-**Program hub:** [nextflows.ai/academy](https://nextflows.ai/academy)  
-**Full program page (in this repo):** [`docs/PROGRAM.md`](docs/PROGRAM.md)  
-**Apply:** [Cohort application](https://nextflows.ai/academy/apply?cohort=1&program=building-mcp-ai-engines)
-
----
-
-## About NextFlows Academy
-
-[NextFlows Academy](https://nextflows.ai/academy) runs structured, cohort-based programs with live sessions, mentor support, and a real project you ship by the end.
-
-This repository belongs to:
-
-| | |
-| --- | --- |
-| **Program** | Building an MCP for an AI Engine |
-| **Audience** | 4th & 5th year CS / CE students |
-| **Duration** | 6 weeks |
-| **Format** | Cohort + project |
-| **Price** | Free |
-| **Level** | Intermediate |
-| **Outcome** | Shipped MCP server on GitHub |
-| **Schedule** | Wed & Sat online 1:30–3:30 PM + Monday on-site workshop days |
-
-You go from “what’s an MCP?” to a working MCP server connected to an AI engine (for example Claude), fully documented, and live on GitHub.
-
-See [`docs/PROGRAM.md`](docs/PROGRAM.md) for outcomes, weekly plan, starter projects, and who it’s for.
+**Team:** Tala Saabneh · Dareen Abualhaj · Saja Sayare
+**Status:** Week 4 — Hardening ✅
 
 ---
 
-## What you get
+## What this server does
 
-| Path | Purpose |
-| --- | --- |
-| `src/index.ts` | MCP server + stdio transport |
-| `src/tools/` | One register helper per tool |
-| `src/schemas/` | Zod input contracts (with `.describe(...)`) |
-| `examples/` | Sample JSON args for Inspector |
-| `docs/PROGRAM.md` | Full NextFlows Academy program page |
-| `docs/WEEK-2.md` | Full Week 2 step-by-step plan |
-| `docs/CURRICULUM.md` | 6-week overview |
-| `docs/project-choice.md` | Week 2 project choice template |
-| `docs/design.md` | Week 2 design doc template |
+Ask your AI host things like:
 
-**Week 1 is already wired:** a working `greet` tool so you can open Inspector on day one.
+- *"Give me a quote of the day."*
+- *"Find me quotes about courage."*
+- *"What quote categories are available?"*
 
-**Week 2 examples included:** stub tools for *Notes & FAQ Search* (`search_notes`, `list_notes`, `add_note`). Enable them when you pick that starter (or copy the pattern for your own idea).
+The model calls the matching tool below and returns a formatted result.
+
+## Tools
+
+| Tool | Description | Key inputs | Owner |
+| --- | --- | --- | --- |
+| `get_daily_quote` | Gets a daily inspirational quote from a safe local file or the external API. | `file` *(optional)* — name/relative path of a quote file inside `data/` | Tala |
+| `search_quotes` | Searches for quotes matching a keyword, topic, or author name. | `keyword` *(required, 2–100 chars, no digits)*, `limit` *(optional, 1–50, default 10)* | Dareen |
+| `list_categories` | Lists all available quote categories/tags. | `limit` *(optional, integer)* | Saja |
+
+Example arguments for each tool live in [`examples/`](examples/).
+
+## Data source & fallback order
+
+`get_daily_quote` and `search_quotes` resolve data in this order:
+
+1. **Local file** — if `file` is passed, read it safely from `data/` (path-traversal guarded).
+2. **External API** — if `API_NINJAS_KEY` is set in `.env`, call `api.api-ninjas.com` (host allowlisted, 10s timeout).
+3. **Local fallback** — if no key or the API call fails, fall back to the bundled [`data/quotes.json`](data/quotes.json).
+
+This keeps the server fully demoable **offline**, with no paid keys required.
 
 ## Prerequisites
 
 - Node.js **20+** (`node -v`)
 - npm (`npm -v`)
-- Git + a GitHub account
-- Cursor or VS Code
 
 ## Quick start
 
 ```bash
-git clone <YOUR_FORK_OR_ORG_URL>/MCPRepo.git
-cd MCPRepo
+git clone <YOUR_FORK_OR_ORG_URL>/Quote-of-the-Day.git
+cd Quote-of-the-Day
 npm install
+cp .env.example .env   # optional — only needed for live API mode
 npm run inspect
 ```
 
@@ -71,8 +58,8 @@ In the Inspector browser tab:
 
 1. Click **Connect**
 2. Open **Tools**
-3. Select `greet` and put `Alex` in the **name** field (see `examples/greet.json` for the full args shape)
-4. Try invalid input (empty name) and confirm Zod rejects it
+3. Try `get_daily_quote`, `search_quotes` (e.g. `keyword: "motivation"`), and `list_categories`
+4. Try invalid input (e.g. a `keyword` with digits, or `limit > 50`) and confirm Zod rejects it
 
 To run the server alone (waits on stdin):
 
@@ -80,88 +67,86 @@ To run the server alone (waits on stdin):
 npm run dev
 ```
 
-> **Important:** log only with `console.error`. Never use `console.log` — stdout is reserved for the MCP protocol.
+> **Important:** the server logs only with `console.error`. Never use `console.log` — stdout is reserved for the MCP protocol.
 
-## Week 2
+## Environment variables
 
-Week 2 is design-first. Follow [`docs/WEEK-2.md`](docs/WEEK-2.md).
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `API_NINJAS_KEY` | No | Enables live quote fetching from `api.api-ninjas.com`. Without it, the server runs fully offline on local data. |
 
-Useful scripts:
+Copy `.env.example` → `.env` and fill in your own key. `.env` is git-ignored — never commit real keys.
 
-| Script | What it does |
-| --- | --- |
-| `npm run dev` | Start the MCP server on stdio (stays alive; stop with Ctrl+C) |
-| `npm start` | Same as `dev` |
-| `npm run inspect` | Open MCP Inspector against this server |
+## Security hardening (Week 4)
+
+Full details in [`SECURITY.md`](SECURITY.md) and [`docs/threat-model.md`](docs/threat-model.md). Summary:
+
+- ✅ Strict Zod input validation (types, length limits, character allowlists)
+- ✅ Path-traversal protection on local file reads (`get_daily_quote` `file` arg)
+- ✅ SSRF protection — outbound requests locked to the `api.api-ninjas.com` allowlist
+- ✅ 10-second `AbortController` timeout on all external HTTP calls
+- ✅ Output caps (max 50 records) on search/list results
+- ✅ Secrets isolated in `.env` (git-ignored); never logged or echoed in tool errors
+- ✅ Short, actionable tool errors — no raw stack traces leaked to the model
+
+## Project structure
+
+```text
+Quote-of-the-Day/
+├── data/
+│   └── quotes.json              # Local quote dataset (fallback + offline demo data)
+├── docs/
+│   ├── data-plan.md
+│   ├── design.md                # Week 2 design doc
+│   ├── project-choice.md        # Week 2 project pitch & scoring
+│   ├── review-checklist.md
+│   └── threat-model.md          # Week 4 security threat model
+├── examples/
+│   ├── get_daily_quote.json
+│   ├── list_categories.json
+│   └── search_quotes.json
+├── scripts/
+│   └── check-schema.ts          # Validates data/quotes.json against the expected shape
+├── src/
+│   ├── index.ts                 # MCP server entrypoint + stdio transport
+│   ├── lib/
+│   │   └── quotes.ts            # Pure functions: load / search / pick local quotes
+│   ├── schemas/
+│   │   ├── get-daily-quote.ts
+│   │   ├── list-categories.ts
+│   │   └── search-quotes.ts
+│   └── tools/
+│       ├── get-daily-quote.ts
+│       ├── list-categories.ts
+│       └── search-quotes.ts
+├── .env.example
+├── .gitignore
+├── package.json
+├── SECURITY.md
+└── tsconfig.json
+```
 
 ## Stack
 
-- TypeScript via `tsx` (no build step early on)
-- Official MCP TypeScript SDK (`@modelcontextprotocol/server`)
-- Zod for tool `inputSchema`
+- TypeScript via `tsx` (no build step)
+- Official MCP TypeScript SDK (`@modelcontextprotocol/sdk`)
+- Zod v4 for tool `inputSchema` validation
 - [MCP Inspector](https://github.com/modelcontextprotocol/inspector) for local testing
 - stdio transport for Claude Desktop / Cursor demos
 
-## Six-week journey
+## Scripts
 
-| Week | Focus |
+| Script | What it does |
 | --- | --- |
-| 1 | Set up & first MCP tool (`greet` ✅ in this repo) |
-| 2 | Design your own tools → see [`docs/WEEK-2.md`](docs/WEEK-2.md) |
-| 3 | Connect tools to real data |
-| 4 | Make it safe & reliable |
-| 5 | Test & write docs people can follow |
-| 6 | Ship on GitHub & Demo Day |
-
-Full program details: [`docs/PROGRAM.md`](docs/PROGRAM.md)
-
-## Starter project options (pick in Week 2)
-
-1. **Notes & FAQ Search** — fully offline (example stubs included)
-2. **Personal Expense Tracker** — summarize spending from a spreadsheet
-3. **To-Do List** — create / list / complete tasks
-4. **Weather Briefing** — free API (e.g. Open-Meteo), no paid keys
-5. **Quote of the Day** — simple offline or public API
-
-Advanced ideas (repo health, course planner, job tracker) need **mentor approval** before you expand scope.
-
-## Repo layout after Week 2
-
-```text
-MCPRepo/
-├── docs/
-│   ├── PROGRAM.md
-│   ├── CURRICULUM.md
-│   ├── WEEK-2.md
-│   ├── project-choice.md
-│   └── design.md
-├── examples/
-│   └── <tool_name>.json
-├── src/
-│   ├── index.ts
-│   ├── schemas/
-│   └── tools/
-├── package.json
-└── README.md
-```
-
-## Rules that matter
-
-- One job per tool; use `verb_noun` names (`search_notes`, `add_expense`)
-- Write descriptions for the **model**, not only for humans
-- Every Zod field needs `.describe(...)`
-- Prefer small focused tools over one mega-tool with an `action` enum
-- Avoid paid APIs / OAuth-heavy projects in Weeks 1–2
+| `npm run dev` / `npm start` | Start the MCP server on stdio (stays alive; stop with Ctrl+C) |
+| `npm run inspect` | Open MCP Inspector against this server |
 
 ## Links
 
 - [NextFlows Academy](https://nextflows.ai/academy)
-- [Program page (this repo)](docs/PROGRAM.md)
-- [Apply for Cohort #1](https://nextflows.ai/academy/apply?cohort=1&program=building-mcp-ai-engines)
 - [MCP docs](https://modelcontextprotocol.io/docs)
 - [MCP specification](https://modelcontextprotocol.io/specification/latest)
-- [Build your first server (TypeScript SDK)](https://ts.sdk.modelcontextprotocol.io/v2/get-started/first-server.html)
 
 ## License
 
-MIT — built for [NextFlows Academy](https://nextflows.ai/academy) students.
+MIT
