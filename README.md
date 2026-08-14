@@ -5,7 +5,7 @@
 MCP (Model Context Protocol) server that lets an AI host (Claude, MCP Inspector, etc.) fetch, search, and browse inspirational quotes — either from a curated local dataset or from a live external API, with a safe local fallback.
 
 **Team:** Tala Saabneh · Dareen Abualhaj · Saja Sayare
-**Status:** Week 4 — Hardening ✅
+**Status:** Week 4 — Hardening 
 
 ---
 
