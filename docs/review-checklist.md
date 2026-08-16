@@ -29,6 +29,9 @@ Result: Rejected safely with filesystem error ENOENT: no such file or directory,
 ## Tool 2: search_quotes
 ### Valid Inspector Input: (to confirm/attach — e.g. keyword = "motivation")
 Result:
+<img width="1402" height="783" alt="image" src="https://github.com/user-attachments/assets/4048240c-0c92-49f1-82c4-0e88b712f17f" />
+<img width="1361" height="691" alt="image" src="https://github.com/user-attachments/assets/032cf981-359b-4e70-91dc-e3253aeed801" />
+
 ### Invalid / Attack Inspector Input: keyword = "123" (numeric input, violates keyword schema).
 Result: Blocked by Zod validation. Tool returned a structured MCP error: MCP error -32602: Input validation error: Invalid arguments for tool search_quotes: [{"origin":"string","code":"invalid_format","format":"regex","pattern":"/^[^0-9]+$/","path":["keyword"],"message":"Keyword cannot contain numbers."}].
 <img width="1037" height="450" alt="image" src="https://github.com/user-attachments/assets/800bca68-a8da-4e02-af04-69fa4a87a55b" />
