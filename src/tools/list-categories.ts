@@ -11,6 +11,17 @@ export function registerListCategoriesTool(server: McpServer) {
     },
     async (input: any) => {
       const limit = input?.limit ?? 10;
+      if (!Number.isInteger(limit) || limit < 1 || limit > 50) {
+  return {
+    content: [
+      {
+        type: "text",
+        text: "Request blocked: limit must be an integer between 1 and 50.",
+      },
+    ],
+    isError: true,
+  };
+}
       
       // استدعاء Pure Function
       const categories = getLocalCategories(limit);
