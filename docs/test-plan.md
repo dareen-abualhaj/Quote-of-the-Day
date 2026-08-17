@@ -18,7 +18,7 @@
 | TC6 | `search_quotes` | Default fixtures loaded, keyword guaranteed to match nothing | `keyword: "zzzqqqnonexistentword"` | Handles no-match gracefully — empty array, no crash | **PASS** | `{"results":[]}` |
 | TC7 | `get_daily_quote` | Fixture file missing — pointed `file` param at a filename that does not exist on disk | `file: "nonexistent-fixture-file.json"` | Graceful, sanitized error response (no internal path disclosure) | **PASS** (was FAIL, fixed) | See "Bug Found & Fixed" section below |
 | TC8 | `get_daily_quote` | Network disabled locally (Wi-Fi off) to simulate the external API being unreachable | *(no params)* | Timeout or fallback to local file handled without crashing | **PASS** | `{"quote":"The only person you are destined to become is the person you decide to be.","author":"Ralph Waldo Emerson","category":"mindset"}` — <img width="472" height="221" alt="image" src="https://github.com/user-attachments/assets/6da685e0-3797-493a-9c64-7c440bcb5569" />
-) |
+|
 
 ---
 
