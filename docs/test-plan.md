@@ -88,17 +88,7 @@ No internal path is exposed. Confirmed via Inspector — see screenshot evidence
 
 ---
 
-## TC8 — Manual Run Instructions (Offline/Timeout Simulation)
 
-This case could not be executed remotely and must be run locally:
-
-1. Stop network access for the MCP server process (firewall rule, or disable networking on the machine running it).
-2. In Inspector, call `get_daily_quote` with no params (so it attempts the external API path, if an `API_KEY` is set, before falling back).
-3. Confirm the result is one of:
-   - A clean fallback to the local quote data, or
-   - A clear, bounded timeout error (the existing 10s `AbortController` timeout should prevent an indefinite hang)
-4. Confirm there is **no unhandled crash or hang**.
-5. Update this row's `result` to PASS/FAIL and attach a screenshot.
 
 ---
 
