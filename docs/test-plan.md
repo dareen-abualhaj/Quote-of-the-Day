@@ -80,7 +80,7 @@ function getSafeFileErrorMessage(error, fileName) {
 
 No internal path is exposed. Confirmed via Inspector — see screenshot evidence.
 
-**Fixed in commit:** `8099c700c88d7fda3841eb89c9f59b4b7196a2c0`
+**Fixed in commit:** `75f3c2d82877e0afcbc00f7babb88f03968ae2b0`
 
 ### Follow-up (Later list, not fixed in this pass)
 
