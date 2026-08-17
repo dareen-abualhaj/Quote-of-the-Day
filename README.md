@@ -69,8 +69,9 @@ Example arguments for each tool live in `examples/`.
 3. **Local fallback** — if no key is set or the API call fails, falls back to the bundled `data/quotes.json`.
 
 ## Example prompts
-
+For complete model-to-MCP interaction examples, see [Example Conversations](examples/conversations.md).
 Once connected in Claude Desktop, Cursor, or Inspector, try:
+
 
 - *"Give me today's quote."* → calls `get_daily_quote` with no arguments
 - *"Show me a quote from the file `data/quotes.json`."* → calls `get_daily_quote` with `file: "quotes.json"`
