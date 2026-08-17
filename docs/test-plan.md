@@ -86,11 +86,7 @@ No internal path is exposed. Confirmed via Inspector — see screenshot evidence
 
 `DATA_ROOT = path.resolve(process.cwd(), "data")` resolves relative to the process's working directory at launch. During testing this pointed to two different unexpected locations (`C:\Windows\System32\data` and later `C:\Users\pc\Quote-of-...`) depending on how the server was started — confirming this is a `cwd`/launch-configuration issue, not a code defect. Follow-up: ensure any process that starts this server (MCP client config, service definition, etc.) sets an explicit `cwd` to the project root, so `DATA_ROOT` resolves consistently regardless of launch context.
 
----
 
-
-
----
 
 ## Screenshot Evidence (3 required)
 
