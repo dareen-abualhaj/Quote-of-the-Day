@@ -1,81 +1,94 @@
 # Quote-of-the-Day — MCP Server
 
-> Part of **[NextFlows Academy](https://nextflows.ai/academy)** — cohort program **Building an MCP for an AI Engine**.
-
-MCP (Model Context Protocol) server that lets an AI host (Claude, MCP Inspector, etc.) fetch, search, and browse inspirational quotes — either from a curated local dataset or from a live external API, with a safe local fallback.
-
-**Team:** Tala Saabneh · Dareen Abualhaj · Saja Sayare
-
-
----
-
-## What this server does
+An MCP (Model Context Protocol) server that lets an AI host (Claude, MCP Inspector, etc.) fetch, search, and browse inspirational quotes — either from a curated local dataset or a live external API, with a safe local fallback.
 
 Ask your AI host things like:
+- "Give me a quote of the day."
+- "Find me quotes about courage."
+- "What quote categories are available?"
 
-- *"Give me a quote of the day."*
-- *"Find me quotes about courage."*
-- *"What quote categories are available?"*
+Built by Tala Saabneh, Dareen Abualhaj, and Saja Sayare as part of [NextFlows Academy](https://nextflows.ai/academy) — the cohort program *Building an MCP for an AI Engine*.
 
-The model calls the matching tool below and returns a formatted result.
-
-## Tools
-
-| Tool | Description | Key inputs | Owner |
-| --- | --- | --- | --- |
-| `get_daily_quote` | Gets a daily inspirational quote from a safe local file or the external API. | `file` *(optional)* — name/relative path of a quote file inside `data/` | Tala |
-| `search_quotes` | Searches for quotes matching a keyword, topic, or author name. | `keyword` *(required, 2–100 chars, no digits)*, `limit` *(optional, 1–50, default 10)* | Dareen |
-| `list_categories` | Lists all available quote categories/tags. | `limit` *(optional, integer)* | Saja |
-
-Example arguments for each tool live in [`examples/`](examples/).
-
-## Data source & fallback order
-
-`get_daily_quote` and `search_quotes` resolve data in this order:
-
-1. **Local file** — if `file` is passed, read it safely from `data/` (path-traversal guarded).
-2. **External API** — if `API_NINJAS_KEY` is set in `.env`, call `api.api-ninjas.com` (host allowlisted, 10s timeout).
-3. **Local fallback** — if no key or the API call fails, fall back to the bundled [`data/quotes.json`](data/quotes.json).
-
-This keeps the server fully demoable **offline**, with no paid keys required.
-
-## Prerequisites
+## Requirements
 
 - Node.js **20+** (`node -v`)
 - npm (`npm -v`)
 
-## Quick start
+## Install
 
 ```bash
 git clone <YOUR_FORK_OR_ORG_URL>/Quote-of-the-Day.git
 cd Quote-of-the-Day
 npm install
 cp .env.example .env   # optional — only needed for live API mode
-npm run inspect
 ```
 
-In the Inspector browser tab:
+`.env` is git-ignored — never commit a real key. Leave `API_KEY` blank (or delete the line) to run fully offline on `data/quotes.json`.
 
-1. Click **Connect**
-2. Open **Tools**
-3. Try `get_daily_quote`, `search_quotes` (e.g. `keyword: "motivation"`), and `list_categories`
-4. Try invalid input (e.g. a `keyword` with digits, or `limit > 50`) and confirm Zod rejects it
+## Run
 
-To run the server alone (waits on stdin):
+To run the server alone (it waits on stdin — this is expected):
 
 ```bash
 npm run dev
 ```
 
-> **Important:** the server logs only with `console.error`. Never use `console.log` — stdout is reserved for the MCP protocol.
+Stop it with `Ctrl+C`. `npm start` does the same thing.
 
-## Environment variables
+> **Important:** the server logs only with `console.error`. Never `console.log` — stdout is reserved for the MCP protocol.
 
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `API_NINJAS_KEY` | No | Enables live quote fetching from `api.api-ninjas.com`. Without it, the server runs fully offline on local data. |
+## Inspect it (recommended for first run)
 
-Copy `.env.example` → `.env` and fill in your own key. `.env` is git-ignored — never commit real keys.
+```bash
+npm run inspect
+```
+
+This opens MCP Inspector in your browser, pointed at this server. From there:
+
+1. Click **Connect**
+2. Open the **Tools** tab
+3. Try `get_daily_quote`, `search_quotes` (e.g. `keyword: "motivation"`), and `list_categories`
+4. Try invalid input (a keyword with digits, or a `limit` over 50) and confirm Zod rejects it with a clear error
+
+## Tools
+
+| Tool | Description | Key inputs | Owner |
+| --- | --- | --- | --- |
+| `get_daily_quote` | Gets a daily inspirational quote from a safe local file or the external API. | `file` (optional) — name/relative path of a quote file inside `data/` | Tala |
+| `search_quotes` | Searches for quotes matching a keyword, topic, or author name. | `keyword` (required, 2–100 chars, no digits), `limit` (optional, 1–50, default 10) | Dareen |
+| `list_categories` | Lists all available quote categories/tags. | `limit` (optional, integer, 1–50, default 10) | Saja |
+
+Example arguments for each tool live in `examples/`.
+
+### Data source & fallback order
+
+`get_daily_quote` and `search_quotes` resolve data in this order:
+
+1. **Local file** — if `file` is passed, it's read safely from `data/` (path-traversal guarded).
+2. **External API** — if `API_KEY` is set in `.env`, calls `api.api-ninjas.com` (host allowlisted, 10s timeout).
+3. **Local fallback** — if no key is set or the API call fails, falls back to the bundled `data/quotes.json`.
+
+## Example prompts
+For complete model-to-MCP interaction examples, see [Example Conversations](examples/conversations.md).
+Once connected in Claude Desktop, Cursor, or Inspector, try:
+
+
+- *"Give me today's quote."* → calls `get_daily_quote` with no arguments
+- *"Show me a quote from the file `data/quotes.json`."* → calls `get_daily_quote` with `file: "quotes.json"`
+- *"Find me quotes about courage."* → calls `search_quotes` with `keyword: "courage"`
+- *"Give me 5 quotes mentioning Einstein."* → calls `search_quotes` with `keyword: "Einstein", limit: 5`
+- *"What quote categories do you have?"* → calls `list_categories`
+
+## Troubleshooting
+
+**`npm install` or `npm run dev` fails with syntax/engine errors**
+Your Node version is too old — this project needs Node 20+. Check with `node -v` and upgrade (e.g. via [nvm](https://github.com/nvm-sh/nvm)) if needed.
+
+**Inspector opens but "Connect" fails, or the server exits immediately**
+Usually means `npm install` didn't finish cleanly. Delete `node_modules` and `package-lock.json` if you edited them, then re-run `npm install`. Make sure you're running `npm run inspect` from inside the `Quote-of-the-Day` folder, not its parent.
+
+**A tool call returns a validation error like `"Keyword must be at least 2 characters long."` or `"Keyword cannot contain numbers."`**
+This is Zod doing its job — `search_quotes` requires a `keyword` of 2–100 characters with no digits. Check `examples/search_quotes.json` for a working shape; note the argument name is `keyword`, not `query`.
 
 ## Security hardening (Week 4)
 
@@ -149,4 +162,6 @@ Quote-of-the-Day/
 
 ## License
 
-MIT
+MIT — see [`LICENSE`](LICENSE).
+
+
