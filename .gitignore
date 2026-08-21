@@ -10,3 +10,5 @@ build/
 .vscode/
 coverage/
 .tsx-cache/
+data/*.bak-*
+data/*.tmp-*
