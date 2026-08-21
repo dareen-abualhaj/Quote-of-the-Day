@@ -1,302 +1,368 @@
 [
   {
+    "id": "444ad052-2a90-4d54-a828-783388807ec6",
     "quote": "The only way to do great work is to love what you do.",
     "author": "Steve Jobs",
     "category": "motivation"
   },
   {
+    "id": "87e5b110-6117-4c27-8af1-7c662c858cac",
     "quote": "Success is not final, failure is not fatal: It is the courage to continue that counts.",
     "author": "Winston Churchill",
     "category": "courage"
   },
   {
+    "id": "18911289-94ad-4224-8764-1fc511e26d75",
     "quote": "Believing you can is half the battle.",
     "author": "Theodore Roosevelt",
     "category": "inspiration"
   },
   {
+    "id": "b9c72581-c5ca-4191-9b01-18c82bfc832b",
     "quote": "Life is what happens when you're busy making other plans.",
     "author": "John Lennon",
     "category": "life"
   },
   {
+    "id": "670fc654-2ea8-40f1-85ef-a5a94935ce15",
     "quote": "The future belongs to those who believe in the beauty of their dreams.",
     "author": "Eleanor Roosevelt",
     "category": "inspiration"
   },
   {
+    "id": "dc97b1e3-b57e-4c76-a287-2157571dfdc9",
     "quote": "It does not matter how slowly you go as long as you do not stop.",
     "author": "Confucius",
     "category": "perseverance"
   },
   {
+    "id": "c2f8acc8-75a7-4d62-8d80-fc7be0724237",
     "quote": "Our greatest glory is not in never falling, but in rising every time we fall.",
     "author": "Confucius",
     "category": "perseverance"
   },
   {
+    "id": "051eef26-8d54-4572-b272-474a1ee0a368",
     "quote": "The way to get started is to quit talking and begin doing.",
     "author": "Walt Disney",
     "category": "motivation"
   },
   {
+    "id": "3535ac3b-c823-43c5-bc57-cd784a407966",
     "quote": "Don't watch the clock; do what it does. Keep going.",
     "author": "Sam Levenson",
     "category": "perseverance"
   },
   {
+    "id": "215c95e0-e387-451d-93ae-07c0e1f6d5aa",
     "quote": "You miss 100% of the shots you don't take.",
     "author": "Wayne Gretzky",
     "category": "courage"
   },
   {
+    "id": "0aa5a6a4-5211-409b-a0f1-5830a053d4e0",
     "quote": "Whether you think you can or you think you can't, you're right.",
     "author": "Henry Ford",
     "category": "mindset"
   },
   {
+    "id": "b95bc997-8299-4d7f-8ccc-25d253da6c49",
     "quote": "I have not failed. I've just found 10,000 ways that won't work.",
     "author": "Thomas Edison",
     "category": "perseverance"
   },
   {
+    "id": "329d5c1b-7c04-4110-b21e-a7a9886b9932",
     "quote": "The only limit to our realization of tomorrow is our doubts of today.",
     "author": "Franklin D. Roosevelt",
     "category": "inspiration"
   },
   {
+    "id": "af2231a1-2aac-4765-810f-b37a25176963",
     "quote": "Do what you can, with what you have, where you are.",
     "author": "Theodore Roosevelt",
     "category": "motivation"
   },
   {
+    "id": "399a4cad-7ee0-4da0-8243-f9f09c1ef079",
     "quote": "Everything you've ever wanted is on the other side of fear.",
     "author": "George Addair",
     "category": "courage"
   },
   {
+    "id": "60803753-e91d-40d7-b378-a465970e20fb",
     "quote": "Hardships often prepare ordinary people for an extraordinary destiny.",
     "author": "C.S. Lewis",
     "category": "wisdom"
   },
   {
+    "id": "bd684062-12b3-4313-a715-d61a158ac719",
     "quote": "Success is not how high you have climbed, but how you make a positive difference to the world.",
     "author": "Roy T. Bennett",
     "category": "success"
   },
   {
+    "id": "415d99a7-75af-4ba2-89f6-1c7aeb52d2f8",
     "quote": "You are never too old to set another goal or to dream a new dream.",
     "author": "C.S. Lewis",
     "category": "motivation"
   },
   {
+    "id": "32370dc4-a957-4eb2-9f2a-38424b806197",
     "quote": "The purpose of our lives is to be happy.",
     "author": "Dalai Lama",
     "category": "life"
   },
   {
+    "id": "c4980608-9671-4196-9f70-2a7b45fc571a",
     "quote": "Get busy living or get busy dying.",
     "author": "Stephen King",
     "category": "life"
   },
   {
+    "id": "d8b9e863-aa46-4988-a0b6-06d072c978b1",
     "quote": "You only live once, but if you do it right, once is enough.",
     "author": "Mae West",
     "category": "life"
   },
   {
+    "id": "55e5916d-1416-405e-8b31-7218d6c6c27b",
     "quote": "In the middle of difficulty lies opportunity.",
     "author": "Albert Einstein",
     "category": "wisdom"
   },
   {
+    "id": "853440d7-d2e5-4438-93ab-4c9eef3cec05",
     "quote": "Never let the fear of striking out keep you from playing the game.",
     "author": "Babe Ruth",
     "category": "courage"
   },
   {
+    "id": "c66e84e9-3547-486b-9318-f40cc49497ea",
     "quote": "Life is either a daring adventure or nothing at all.",
     "author": "Helen Keller",
     "category": "courage"
   },
   {
+    "id": "754e4f16-763c-44e1-8367-f53163acb19b",
     "quote": "Many of life's failures are people who did not realize how close they were to success when they gave up.",
     "author": "Thomas Edison",
     "category": "perseverance"
   },
   {
+    "id": "af1991bf-d8ca-47e8-b2d0-0b9e0586a7bb",
     "quote": "If you want to lift yourself up, lift up someone else.",
     "author": "Booker T. Washington",
     "category": "wisdom"
   },
   {
+    "id": "c7c04374-102c-4c43-8378-386012cce2e5",
     "quote": "I have learned over the years that when one's mind is made up, this diminishes fear.",
     "author": "Rosa Parks",
     "category": "courage"
   },
   {
+    "id": "64e14c7b-3221-4e58-948d-29defc95d642",
     "quote": "Change your thoughts and you change your world.",
     "author": "Norman Vincent Peale",
     "category": "mindset"
   },
   {
+    "id": "ce659574-0626-4307-9758-e1174188d287",
     "quote": "Everything has beauty, but not everyone can see.",
     "author": "Confucius",
     "category": "wisdom"
   },
   {
+    "id": "cf260cf1-78d4-4e98-ac3e-c91ad2186a0d",
     "quote": "When you reach the end of your rope, tie a knot in it and hang on.",
     "author": "Franklin D. Roosevelt",
     "category": "perseverance"
   },
   {
+    "id": "871face8-4189-4ac0-afaf-8ea4d6a8ede3",
     "quote": "Always remember that you are absolutely unique. Just like everyone else.",
     "author": "Margaret Mead",
     "category": "life"
   },
   {
+    "id": "c9ad52de-f4bf-4bdf-a64b-6842ee77cba0",
     "quote": "Don't judge each day by the harvest you reap but by the seeds that you plant.",
     "author": "Robert Louis Stevenson",
     "category": "wisdom"
   },
   {
+    "id": "656c09a6-73ea-495c-a092-bbfdf443295d",
     "quote": "The future belongs to those who prepare for it today.",
     "author": "Malcolm X",
     "category": "motivation"
   },
   {
+    "id": "56ae8a86-dfce-4bd5-a5f9-e03778eb42b4",
     "quote": "How wonderful it is that nobody need wait a single moment before starting to improve the world.",
     "author": "Anne Frank",
     "category": "inspiration"
   },
   {
+    "id": "5839848d-1319-4bff-8220-44d2f7d0badb",
     "quote": "If life were predictable it would cease to be life, and be without flavor.",
     "author": "Eleanor Roosevelt",
     "category": "life"
   },
   {
+    "id": "d2c587f7-7233-4228-a85e-7e47666c53e3",
     "quote": "It is during our darkest moments that we must focus to see the light.",
     "author": "Aristotle",
     "category": "inspiration"
   },
   {
+    "id": "940954b5-37ca-43fd-979d-38e6e7e36f29",
     "quote": "Do not go where the path may lead, go instead where there is no path and leave a trail.",
     "author": "Ralph Waldo Emerson",
     "category": "inspiration"
   },
   {
+    "id": "c1e737ef-5e57-4540-b98b-e87867199797",
     "quote": "You will face many defeats in life, but never let yourself be defeated.",
     "author": "Maya Angelou",
     "category": "courage"
   },
   {
+    "id": "3d419d2a-4c28-4faf-aa21-d884c0d90514",
     "quote": "The only impossible journey is the one you never begin.",
     "author": "Tony Robbins",
     "category": "motivation"
   },
   {
+    "id": "1b14d70f-a775-49df-bfea-bb72730394a3",
     "quote": "In this life we cannot do great things. We can only do small things with great love.",
     "author": "Mother Teresa",
     "category": "wisdom"
   },
   {
+    "id": "07e030f2-ffe8-41d6-9561-05e33e611e78",
     "quote": "Only a life lived for others is a life worthwhile.",
     "author": "Albert Einstein",
     "category": "wisdom"
   },
   {
+    "id": "3d4f7412-4edb-4f24-9d23-ad13eeef2087",
     "quote": "The mind is everything. What you think you become.",
     "author": "Buddha",
     "category": "mindset"
   },
   {
+    "id": "6daf57fa-1180-4467-b4fd-473b0361c31a",
     "quote": "Strive not to be a success, but rather to be of value.",
     "author": "Albert Einstein",
     "category": "success"
   },
   {
+    "id": "bbc86990-5338-427b-bf10-9aa32bf31513",
     "quote": "The best time to plant a tree was 20 years ago. The second best time is now.",
     "author": "Chinese Proverb",
     "category": "motivation"
   },
   {
+    "id": "02c74877-6ff0-4f3c-9056-79d970107e88",
     "quote": "Your time is limited, so don't waste it living someone else's life.",
     "author": "Steve Jobs",
     "category": "life"
   },
   {
+    "id": "65f794be-6c7e-40dd-9be4-bd739422d5e4",
     "quote": "Not everything that is faced can be changed, but nothing can be changed until it is faced.",
     "author": "James Baldwin",
     "category": "courage"
   },
   {
+    "id": "e9f14707-ee51-41c0-9a29-6031daf68434",
     "quote": "The best way to predict the future is to create it.",
     "author": "Abraham Lincoln",
     "category": "motivation"
   },
   {
+    "id": "b7f82189-d8d2-4e8b-b2ef-5cd25c49a824",
     "quote": "Do not wait for leaders; do it alone, person to person.",
     "author": "Mother Teresa",
     "category": "courage"
   },
   {
+    "id": "eb80e071-f2ad-4d4a-8694-efa414bf8a56",
     "quote": "It always seems impossible until it's done.",
     "author": "Nelson Mandela",
     "category": "perseverance"
   },
   {
+    "id": "fe25f7e1-9c45-4fa8-847d-08373ba8117b",
     "quote": "Turn your wounds into wisdom.",
     "author": "Oprah Winfrey",
     "category": "wisdom"
   },
   {
+    "id": "09372f98-0602-4846-afc8-be6bf091ff9c",
     "quote": "Act as if what you do makes a difference. It does.",
     "author": "William James",
     "category": "inspiration"
   },
   {
+    "id": "6534f8a2-dd3c-4058-82a0-197d15f71236",
     "quote": "The only person you are destined to become is the person you decide to be.",
     "author": "Ralph Waldo Emerson",
     "category": "mindset"
   },
   {
+    "id": "c233d253-f645-4a1d-95ea-da3758e426b4",
     "quote": "Go confidently in the direction of your dreams. Live the life you have imagined.",
     "author": "Henry David Thoreau",
     "category": "inspiration"
   },
   {
+    "id": "c3206cf8-3181-49c0-911c-98a2615cfc79",
     "quote": "What lies behind us and what lies before us are tiny matters compared to what lies within us.",
     "author": "Ralph Waldo Emerson",
     "category": "wisdom"
   },
   {
+    "id": "f759633d-2502-4c79-8682-71bd9b664ebd",
     "quote": "Keep your face always toward the sunshine, and shadows will fall behind you.",
     "author": "Walt Whitman",
     "category": "inspiration"
   },
   {
+    "id": "9efd1b5a-9884-470c-a74b-c36d8e6b8516",
     "quote": "Failure will never overtake me if my determination to succeed is strong enough.",
     "author": "Og Mandino",
     "category": "success"
   },
   {
+    "id": "76a6fb5a-b314-44d1-bcd9-d3e32a47ada6",
     "quote": "The harder the conflict, the more glorious the triumph.",
     "author": "Thomas Paine",
     "category": "courage"
   },
   {
+    "id": "664e153a-bdbe-4870-885a-a7365c64e835",
     "quote": "A person who never made a mistake never tried anything new.",
     "author": "Albert Einstein",
     "category": "wisdom"
   },
   {
+    "id": "eb77efe8-2350-4a53-85c2-8338d388ac32",
     "quote": "There is no substitute for hard work.",
     "author": "Thomas Edison",
     "category": "success"
   },
   {
-    "quote": "The greatest glory in living lies not in never falling, but in rising every time we fall.",
-    "author": "Nelson Mandela",
-    "category": "perseverance"
+    "id": "a2148617-826e-42bc-8672-e6d420169a9f",
+    "quote": "all things is right if we bileve you",
+    "author": "dareen",
+    "category": "ppppp"
+  },
+  {
+    "id": "2bc07a04-dc6c-4d43-ad2d-8d56e986e4d2",
+    "quote": "testing",
+    "author": "Dareen",
+    "category": "love"
   }
 ]

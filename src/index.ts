@@ -4,11 +4,12 @@ import { fileURLToPath } from "url";
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
-
+import { registerCreateQuoteTool } from "./tools/create-quote.js";
 import { registerGetDailyQuoteTool } from "./tools/get-daily-quote.js";
 import { registerSearchQuotesTool } from "./tools/search-quotes.js";
 import { registerListCategoriesTool } from "./tools/list-categories.js";
-
+import { registerUpdateQuoteTool } from "./tools/update-quote.js";
+import { registerDeleteQuoteTool } from "./tools/delete-quote.js";
 // Resolve the project root relative to this file.
 // This avoids depending on process.cwd(), which can be different
 // when the server is launched from Claude Desktop.
@@ -31,7 +32,9 @@ export function createServer(): McpServer {
   registerGetDailyQuoteTool(server); // Tala
   registerSearchQuotesTool(server); // Dareen
   registerListCategoriesTool(server); // Saja
-
+  registerCreateQuoteTool(server); // Tala
+  registerUpdateQuoteTool(server); // Dareen
+  registerDeleteQuoteTool(server); // Saja
   return server;
 }
 
