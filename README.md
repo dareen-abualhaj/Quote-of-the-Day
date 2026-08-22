@@ -1,11 +1,14 @@
 # Quote-of-the-Day — MCP Server
 
-An MCP (Model Context Protocol) server that lets an AI host (Claude, MCP Inspector, etc.) fetch, search, and browse inspirational quotes — either from a curated local dataset or a live external API, with a safe local fallback.
+An MCP (Model Context Protocol) server that lets an AI host (Claude, MCP Inspector, etc.) fetch, search, browse, and now manage inspirational quotes — either from a curated local dataset or a live external API, with a safe local fallback, plus create/update/delete tools that write straight back to the local dataset.
 
 Ask your AI host things like:
 - "Give me a quote of the day."
 - "Find me quotes about courage."
 - "What quote categories are available?"
+- "Add a new quote from Marie Curie about perseverance."
+- "Update quote &lt;id&gt; to fix a typo in the author name."
+- "Delete quote &lt;id&gt;." (requires an explicit confirmation)
 
 Built by Tala Saabneh, Dareen Abualhaj, and Saja Sayare as part of [NextFlows Academy](https://nextflows.ai/academy) — the cohort program *Building an MCP for an AI Engine*.
 
@@ -49,6 +52,7 @@ This opens MCP Inspector in your browser, pointed at this server. From there:
 2. Open the **Tools** tab
 3. Try `get_daily_quote`, `search_quotes` (e.g. `keyword: "motivation"`), and `list_categories`
 4. Try invalid input (a keyword with digits, or a `limit` over 50) and confirm Zod rejects it with a clear error
+5. Try the write tools: `create_quote`, then `update_quote` with the returned `id`, then `delete_quote` with that same `id` and `confirm: true`
 
 ## Tools
 
@@ -57,8 +61,19 @@ This opens MCP Inspector in your browser, pointed at this server. From there:
 | `get_daily_quote` | Gets a daily inspirational quote from a safe local file or the external API. | `file` (optional) — name/relative path of a quote file inside `data/` | Tala |
 | `search_quotes` | Searches for quotes matching a keyword, topic, or author name. | `keyword` (required, 2–100 chars, no digits), `limit` (optional, 1–50, default 10) | Dareen |
 | `list_categories` | Lists all available quote categories/tags. | `limit` (optional, integer, 1–50, default 10) | Saja |
+| `create_quote` | Adds a new quote to the local `quotes.json` dataset. No path/filename input — it can only ever write to the server's own data file. | `quote` (3–500 chars), `author` (letters/spaces/`.`/`'`/`-` only), `category` (letters/spaces/hyphens only) | Tala |
+| `update_quote` | Updates one or more fields of an existing quote, addressed by `id`. Fails cleanly (no-op) if the `id` doesn't exist — never creates a new entry. | `id` (UUID, required), `quote`/`author`/`category` (all optional — at least one required) | Dareen |
+| `delete_quote` | Permanently deletes exactly one quote by `id`. Always backs up `quotes.json` first and refuses to empty the collection entirely. | `id` (UUID, required), `confirm` (must be the literal `true`) | Saja |
 
-Example arguments for each tool live in `examples/`.
+Example arguments for the original three tools live in `examples/`.
+
+### About the write tools (`create_quote` / `update_quote` / `delete_quote`)
+
+- **Ids** — every quote has a UUID `id`. Legacy entries in `data/quotes.json` that predate these tools are automatically back-filled with an `id` the first time a write tool runs.
+- **Atomic writes** — every save writes to a temp file in `data/` and then renames it over `quotes.json`, so a crash mid-write can never corrupt the file.
+- **Automatic backups** — before any real change, a timestamped `quotes.json.bak-<timestamp>` copy is written to `data/`, so any bad create/update/delete can be reverted by hand.
+- **Guardrails** — `create_quote` refuses once the collection hits 1000 quotes (`MAX_QUOTES`); `delete_quote` refuses to remove the last remaining quote and requires `confirm: true` — a prompt-injection attempt can't satisfy this by accident, and Zod rejects the call before any file is touched if it's missing or `false`.
+- **No path input** — unlike `get_daily_quote`, none of the write tools accept a filename/path from the caller. They only ever read and write the server's own `data/quotes.json`, which removes path traversal as an attack surface for writes entirely.
 
 ### Data source & fallback order
 
@@ -78,6 +93,9 @@ Once connected in Claude Desktop, Cursor, or Inspector, try:
 - *"Find me quotes about courage."* → calls `search_quotes` with `keyword: "courage"`
 - *"Give me 5 quotes mentioning Einstein."* → calls `search_quotes` with `keyword: "Einstein", limit: 5`
 - *"What quote categories do you have?"* → calls `list_categories`
+- *"Add a quote: 'The only way out is through', author Robert Frost, category resilience."* → calls `create_quote` with `quote`, `author: "Robert Frost"`, `category: "resilience"`
+- *"Change the category of quote &lt;id&gt; to motivation."* → calls `update_quote` with `id`, `category: "motivation"`
+- *"Delete quote &lt;id&gt;, I confirm."* → calls `delete_quote` with `id`, `confirm: true`
 
 ## Troubleshooting
 
@@ -101,6 +119,9 @@ Full details in [`SECURITY.md`](SECURITY.md) and [`docs/threat-model.md`](docs/t
 - ✅ Output caps (max 50 records) on search/list results
 - ✅ Secrets isolated in `.env` (git-ignored); never logged or echoed in tool errors
 - ✅ Short, actionable tool errors — no raw stack traces leaked to the model
+- ✅ Write tools (`create_quote`/`update_quote`/`delete_quote`) take no path/filename input — no user-controlled path exists to sanitize
+- ✅ Atomic writes (temp file + rename) and a timestamped backup before every write, so a crash or a bad edit can't corrupt or permanently lose data
+- ✅ `delete_quote` requires a literal `confirm: true` and refuses to empty the collection; `create_quote` is capped at 1000 quotes to prevent bloat
 
 ## Project structure
 
@@ -110,11 +131,14 @@ Quote-of-the-Day/
 │   └── quotes.json              # Local quote dataset (fallback + offline demo data)
 ├── docs/
 │   ├── data-plan.md
+│   ├── demo-script.md           # 5-minute live demo script
 │   ├── design.md                # Week 2 design doc
 │   ├── project-choice.md        # Week 2 project pitch & scoring
 │   ├── review-checklist.md
+│   ├── test-plan.md
 │   └── threat-model.md          # Week 4 security threat model
 ├── examples/
+│   ├── conversations.md
 │   ├── get_daily_quote.json
 │   ├── list_categories.json
 │   └── search_quotes.json
@@ -122,15 +146,22 @@ Quote-of-the-Day/
 ├── src/
 │   ├── index.ts                 # MCP server entrypoint + stdio transport
 │   ├── lib/
-│   │   └── quotes.ts            # Pure functions: load / search / pick local quotes
+│   │   ├── quotes.ts            # Pure functions: load / search / pick local quotes
+│   │   └── quotes-write.ts      # Atomic writes, backups, id lookup for create/update/delete
 │   ├── schemas/
+│   │   ├── create-quote.ts
+│   │   ├── delete-quote.ts
 │   │   ├── get-daily-quote.ts
 │   │   ├── list-categories.ts
-│   │   └── search-quotes.ts
+│   │   ├── search-quotes.ts
+│   │   └── update-quote.ts
 │   └── tools/
+│       ├── create-quote.ts
+│       ├── delete-quote.ts
 │       ├── get-daily-quote.ts
 │       ├── list-categories.ts
-│       └── search-quotes.ts
+│       ├── search-quotes.ts
+│       └── update-quote.ts
 ├── .env.example
 ├── .gitignore
 ├── package.json
@@ -162,5 +193,3 @@ Quote-of-the-Day/
 ## License
 
 MIT — see [`LICENSE`](LICENSE).
-
-
