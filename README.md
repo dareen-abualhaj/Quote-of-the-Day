@@ -118,8 +118,7 @@ Quote-of-the-Day/
 │   ├── get_daily_quote.json
 │   ├── list_categories.json
 │   └── search_quotes.json
-├── scripts/
-│   └── check-schema.ts          # Validates data/quotes.json against the expected shape
+│ 
 ├── src/
 │   ├── index.ts                 # MCP server entrypoint + stdio transport
 │   ├── lib/
